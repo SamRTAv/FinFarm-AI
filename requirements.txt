@@ -1,0 +1,39 @@
+# Core ML / NLP
+torch>=2.0.0
+torchaudio>=2.0.0
+transformers==4.38.2
+datasets>=2.18.0
+evaluate>=0.4.0
+accelerate>=0.27.0
+sentence-transformers>=2.7.0
+sentencepiece
+sacremoses
+
+# HuggingFace Hub
+huggingface-hub>=0.22.0
+bitsandbytes
+
+# Data
+pandas>=2.0.0
+pyarrow
+scikit-learn
+matplotlib
+seaborn
+
+# Language Detection / Translation (install manually from GitHub)
+# git clone https://github.com/AI4Bharat/IndicLID.git
+# git clone https://github.com/VarunGumma/IndicTransToolkit.git && pip install -e IndicTransToolkit
+fasttext
+nltk
+
+# Audio
+# torchaudio already listed above
+
+# HTTP
+requests>=2.31.0
+
+# Utils
+numpy>=1.24.0
+regex
+mock
+tqdm
