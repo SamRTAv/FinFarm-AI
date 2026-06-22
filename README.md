@@ -1,4 +1,53 @@
+---
+title: FinFarm AI
+emoji: 🌾
+colorFrom: green
+colorTo: blue
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # Farm AI & FinAI Project
+
+Multilingual **Agro / Banking / General** query assistant. A user submits a
+query in any supported Indic language and picks a domain; the pipeline detects
+the language, classifies + retrieves relevant answers, synthesises a reply with
+Groq, and translates it back to the original language.
+
+## Deploying to a HuggingFace Docker Space
+
+1. Create a **Docker** Space and push this folder to it.
+2. In **Settings → Variables and secrets**, add (as *Secrets*):
+   - `GROQ_API_KEY`
+   - `HF_TOKEN`
+   - `DATAGOV_API_KEY` (only if re-fetching KCC data)
+   > ⚠️ The fallback values currently hard-coded in `config/settings.py` are
+   > exposed and must be **rotated**. Production reads them from env only.
+3. The Space builds the `Dockerfile`, warms the models on startup, and serves
+   on port `7860`.
+
+## API
+
+`POST /query`
+```json
+{ "query": "மழைக்கு பிறகு நெல் எப்போது விதைக்க வேண்டும்?",
+  "domain": "agro",
+  "state_name": "TAMILNADU" }
+```
+Returns `{ final_answer, detected_lang, domain, intent, labels, answers_en }`.
+Interactive docs at `/docs`; liveness at `/health`.
+
+## Architecture (unified pipeline)
+
+```
+START → detect_language → translate_query → route by domain
+   agro    → classify (native) → retrieve KCC → translate answers→EN ┐
+   banking → translate query→EN → classify → retrieve (EN)           ├→ Groq synthesis
+   general → (no retrieval)                                          ┘
+                                          → back-translate (EN→original) → END
+```
+Orchestrated with **LangGraph** in `pipeline/graph.py`.
 
 ## Project Structure
 

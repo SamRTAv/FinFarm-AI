@@ -1,0 +1,12 @@
+.git
+__pycache__/
+*.pyc
+*.ipynb
+*.ipynb_checkpoints
+events.out.tfevents.*
+logs/
+indicbert-finetuned/
+bert-finetuned-intent/
+finenv/
+*.zip
+.env
